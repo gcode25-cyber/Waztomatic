@@ -29,11 +29,22 @@ interface SessionData {
 export class WhatsAppService {
   private sessions: Map<string, SessionData> = new Map();
   private authDir = path.join(process.cwd(), 'auth_sessions');
+  private broadcastFunction?: (data: any) => void;
 
   constructor() {
     // Ensure auth directory exists
     if (!fs.existsSync(this.authDir)) {
       fs.mkdirSync(this.authDir, { recursive: true });
+    }
+  }
+
+  setBroadcast(broadcastFn: (data: any) => void) {
+    this.broadcastFunction = broadcastFn;
+  }
+
+  private broadcast(data: any) {
+    if (this.broadcastFunction) {
+      this.broadcastFunction(data);
     }
   }
 
@@ -113,11 +124,12 @@ export class WhatsAppService {
     }
   }
 
-  private async handleConnectionUpdate(sessionId: string, update: Partial<ConnectionState>) {
+  private async handleConnectionUpdate(sessionId: string, update: any) {
     const sessionData = this.sessions.get(sessionId);
     if (!sessionData) return;
 
     const { connection, lastDisconnect, qr } = update;
+    console.log(`[WhatsApp] Connection update for ${sessionId}:`, { connection, qr: !!qr });
 
     if (qr) {
       try {
@@ -130,6 +142,12 @@ export class WhatsAppService {
           qrCode: qrCodeDataUrl, 
           status: 'qr_pending' 
         });
+        
+        // Broadcast session update
+        this.broadcast({
+          type: 'session_updated',
+          data: { sessionId, status: 'qr_pending', qrCode: qrCodeDataUrl }
+        });
       } catch (error) {
         console.error('Error generating QR code:', error);
       }
@@ -141,6 +159,10 @@ export class WhatsAppService {
       if (shouldReconnect) {
         sessionData.status = 'connecting';
         await storage.updateSession(sessionId, { status: 'connecting' });
+        this.broadcast({
+          type: 'session_updated',
+          data: { sessionId, status: 'connecting' }
+        });
         // Reconnect after delay
         setTimeout(() => this.createSession(sessionId), 3000);
       } else {
@@ -152,8 +174,13 @@ export class WhatsAppService {
           phone: null,
           qrCode: null 
         });
+        this.broadcast({
+          type: 'session_updated',
+          data: { sessionId, status: 'disconnected' }
+        });
       }
     } else if (connection === 'open') {
+      console.log(`[WhatsApp] Session ${sessionId} connected successfully!`);
       sessionData.status = 'connected';
       sessionData.qr = null;
       
@@ -161,6 +188,7 @@ export class WhatsAppService {
       const phoneNumber = sessionData.socket?.user?.id?.split(':')[0];
       if (phoneNumber) {
         sessionData.phone = phoneNumber;
+        console.log(`[WhatsApp] Phone number detected: ${phoneNumber}`);
       }
 
       await storage.updateSession(sessionId, { 
@@ -168,6 +196,17 @@ export class WhatsAppService {
         phone: sessionData.phone,
         qrCode: null,
         lastSeen: new Date()
+      });
+      
+      // Broadcast session update
+      this.broadcast({
+        type: 'session_updated',
+        data: { 
+          sessionId, 
+          status: 'connected', 
+          phone: sessionData.phone,
+          lastSeen: new Date()
+        }
       });
     }
   }

@@ -65,6 +65,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   }
 
+  // Connect the broadcast function to WhatsApp service
+  whatsappService.setBroadcast(broadcast);
+
   // ========== CONTACTS API ==========
   
   app.get('/api/contacts', async (req, res) => {
@@ -266,6 +269,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ qrCode });
     } catch (error) {
       res.status(500).json({ error: 'Failed to get QR code' });
+    }
+  });
+
+  // Update session status manually (for debugging connected sessions)
+  app.post('/api/sessions/:id/status', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, phone } = req.body;
+      
+      const session = await storage.getSession(id);
+      if (!session) {
+        return res.status(404).json({ error: 'Session not found' });
+      }
+
+      await storage.updateSession(id, { 
+        status, 
+        phone,
+        lastSeen: status === 'connected' ? new Date() : session.lastSeen
+      });
+      
+      broadcast({
+        type: 'session_updated',
+        data: { id, status, phone, lastSeen: new Date() }
+      });
+
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update session status' });
     }
   });
 
