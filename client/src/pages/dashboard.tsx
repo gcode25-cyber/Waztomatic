@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Header } from "@/components/layout/header";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,6 +10,7 @@ import { QRCodeModal } from "@/components/modals/qr-code-modal";
 import { ImportContactsModal } from "@/components/modals/import-contacts-modal";
 import { AutoReplyModal } from "@/components/modals/auto-reply-modal";
 import { useWebSocket } from "@/hooks/use-websocket";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { 
   MessageSquare, 
   CheckCheck, 
@@ -32,6 +33,7 @@ export default function Dashboard() {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isAutoReplyModalOpen, setIsAutoReplyModalOpen] = useState(false);
+  const [selectedSession, setSelectedSession] = useState<any>(null);
 
   const { lastMessage } = useWebSocket();
 
@@ -41,6 +43,18 @@ export default function Dashboard() {
 
   const { data: sessions = [], refetch: refetchSessions } = useQuery({
     queryKey: ["/api/sessions"],
+  });
+
+  const createSessionMutation = useMutation({
+    mutationFn: async (sessionData: { sessionId: string; phone: string }) => {
+      const response = await apiRequest('POST', '/api/sessions', sessionData);
+      return response.json();
+    },
+    onSuccess: (newSession) => {
+      queryClient.invalidateQueries({ queryKey: ["/api/sessions"] });
+      setSelectedSession(newSession);
+      setIsQRModalOpen(true);
+    },
   });
 
   // Handle real-time updates
@@ -126,7 +140,14 @@ export default function Dashboard() {
       buttonBg: "bg-whatsapp-50",
       buttonColor: "text-whatsapp-700",
       buttonHover: "hover:bg-whatsapp-100",
-      onClick: () => setIsQRModalOpen(true),
+      onClick: () => {
+        // Create a new session for the QR modal
+        const sessionId = `session-${Date.now()}`;
+        createSessionMutation.mutate({
+          sessionId,
+          phone: ""
+        });
+      },
       testId: "card-qr-scan"
     },
     {
@@ -432,7 +453,11 @@ export default function Dashboard() {
       />
       <QRCodeModal 
         isOpen={isQRModalOpen} 
-        onClose={() => setIsQRModalOpen(false)} 
+        onClose={() => {
+          setIsQRModalOpen(false);
+          setSelectedSession(null);
+        }}
+        session={selectedSession}
       />
       <ImportContactsModal 
         isOpen={isImportModalOpen} 
