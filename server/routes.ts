@@ -8,6 +8,7 @@ import csv from "csv-parser";
 import { storage } from "./storage";
 import { whatsappService } from "./services/whatsapp";
 import { schedulerService } from "./services/scheduler";
+import QRCode from 'qrcode';
 import { parseSpintax, validateSpintax, countSpintaxVariations } from "./services/spintax";
 import { 
   insertContactSchema, 
@@ -249,7 +250,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ error: 'Session not found' });
       }
 
-      res.json({ qrCode: session.qrCode });
+      let qrCode = session.qrCode;
+      
+      // If QR code exists and is not already a data URL, convert it
+      if (qrCode && !qrCode.startsWith('data:image/')) {
+        try {
+          qrCode = await QRCode.toDataURL(qrCode);
+          // Update the database with the converted QR code
+          await storage.updateSession(id, { qrCode });
+        } catch (error) {
+          console.error('Error converting QR code to data URL:', error);
+        }
+      }
+
+      res.json({ qrCode });
     } catch (error) {
       res.status(500).json({ error: 'Failed to get QR code' });
     }

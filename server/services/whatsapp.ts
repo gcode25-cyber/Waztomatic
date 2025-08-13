@@ -87,10 +87,19 @@ export class WhatsAppService {
           resolve({ qrCode: sessionData.qr });
         }, 10000);
 
-        socket.ev.on('connection.update', (update) => {
+        socket.ev.on('connection.update', async (update) => {
           if (update.qr) {
-            clearTimeout(timeout);
-            resolve({ qrCode: update.qr });
+            try {
+              const qrCodeDataUrl = await QRCode.toDataURL(update.qr);
+              sessionData.qr = qrCodeDataUrl;
+              sessionData.status = 'qr_pending';
+              clearTimeout(timeout);
+              resolve({ qrCode: qrCodeDataUrl });
+            } catch (error) {
+              console.error('Error generating QR code:', error);
+              clearTimeout(timeout);
+              resolve({ qrCode: null });
+            }
           } else if (update.connection === 'open') {
             clearTimeout(timeout);
             resolve({ qrCode: null });
