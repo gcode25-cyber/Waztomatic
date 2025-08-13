@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { X, QrCode, Smartphone, RefreshCw } from "lucide-react";
@@ -70,6 +71,9 @@ export function QRCodeModal({ isOpen, onClose, session }: QRCodeModalProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Connect WhatsApp</DialogTitle>
+          <DialogDescription>
+            Scan the QR code with your WhatsApp mobile app to connect your session.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="text-center space-y-6">

@@ -1,13 +1,17 @@
-import makeWASocket, { 
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const baileys = require('@whiskeysockets/baileys');
+const {
+  makeWASocket,
   ConnectionState, 
   DisconnectReason, 
   useMultiFileAuthState, 
-  WASocket,
   MessageType,
   proto,
   downloadMediaMessage,
   WAMessageKey
-} from '@whiskeysockets/baileys';
+} = baileys;
+import type { WASocket } from '@whiskeysockets/baileys';
 import { Boom } from '@hapi/boom';
 import QRCode from 'qrcode';
 import fs from 'fs';
