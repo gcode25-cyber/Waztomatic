@@ -1,0 +1,173 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(210 25% 7.8431%);
+  --card: hsl(180 6.6667% 97.0588%);
+  --card-foreground: hsl(210 25% 7.8431%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(210 25% 7.8431%);
+  --primary: hsl(203.8863 88.2845% 53.1373%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(210 25% 7.8431%);
+  --secondary-foreground: hsl(0 0% 100%);
+  --muted: hsl(240 1.9608% 90%);
+  --muted-foreground: hsl(210 25% 7.8431%);
+  --accent: hsl(211.5789 51.3514% 92.7451%);
+  --accent-foreground: hsl(203.8863 88.2845% 53.1373%);
+  --destructive: hsl(356.3033 90.5579% 54.3137%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(201.4286 30.4348% 90.9804%);
+  --input: hsl(200 23.0769% 97.4510%);
+  --ring: hsl(202.8169 89.1213% 53.1373%);
+  --chart-1: hsl(203.8863 88.2845% 53.1373%);
+  --chart-2: hsl(159.7826 100% 36.0784%);
+  --chart-3: hsl(42.0290 92.8251% 56.2745%);
+  --chart-4: hsl(147.1429 78.5047% 41.9608%);
+  --chart-5: hsl(341.4894 75.2000% 50.9804%);
+  --sidebar: hsl(180 6.6667% 97.0588%);
+  --sidebar-foreground: hsl(210 25% 7.8431%);
+  --sidebar-primary: hsl(203.8863 88.2845% 53.1373%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(211.5789 51.3514% 92.7451%);
+  --sidebar-accent-foreground: hsl(203.8863 88.2845% 53.1373%);
+  --sidebar-border: hsl(205.0000 25.0000% 90.5882%);
+  --sidebar-ring: hsl(202.8169 89.1213% 53.1373%);
+  --font-sans: 'Inter', 'Open Sans', sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, monospace;
+  --radius: 1.3rem;
+  
+  /* WhatsApp specific colors */
+  --whatsapp-50: hsl(152 50% 96%);
+  --whatsapp-100: hsl(152 40% 88%);
+  --whatsapp-500: hsl(142 68% 46%);
+  --whatsapp-600: hsl(142 76% 36%);
+  --whatsapp-700: hsl(142 82% 28%);
+  
+  /* Additional colors for the design */
+  --blue-50: hsl(214 100% 97%);
+  --blue-100: hsl(214 95% 93%);
+  --blue-600: hsl(217 91% 60%);
+  --purple-50: hsl(270 100% 98%);
+  --purple-100: hsl(270 87% 96%);
+  --purple-600: hsl(271 81% 56%);
+  --orange-50: hsl(33 100% 96%);
+  --orange-100: hsl(34 100% 92%);
+  --orange-600: hsl(25 95% 53%);
+  --gray-50: hsl(210 20% 98%);
+  --gray-100: hsl(220 14% 96%);
+  --gray-200: hsl(220 13% 91%);
+  --gray-300: hsl(216 12% 84%);
+  --gray-400: hsl(218 11% 65%);
+  --gray-500: hsl(220 9% 46%);
+  --gray-600: hsl(215 14% 34%);
+  --gray-700: hsl(217 19% 27%);
+  --gray-800: hsl(215 28% 17%);
+  --gray-900: hsl(221 39% 11%);
+}
+
+.dark {
+  --background: hsl(0 0% 0%);
+  --foreground: hsl(200 6.6667% 91.1765%);
+  --card: hsl(228 9.8039% 10%);
+  --card-foreground: hsl(0 0% 85.0980%);
+  --popover: hsl(0 0% 0%);
+  --popover-foreground: hsl(200 6.6667% 91.1765%);
+  --primary: hsl(203.7736 87.6033% 52.5490%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(195.0000 15.3846% 94.9020%);
+  --secondary-foreground: hsl(210 25% 7.8431%);
+  --muted: hsl(0 0% 9.4118%);
+  --muted-foreground: hsl(210 3.3898% 46.2745%);
+  --accent: hsl(205.7143 70% 7.8431%);
+  --accent-foreground: hsl(203.7736 87.6033% 52.5490%);
+  --destructive: hsl(356.3033 90.5579% 54.3137%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(210 5.2632% 14.9020%);
+  --input: hsl(207.6923 27.6596% 18.4314%);
+  --ring: hsl(202.8169 89.1213% 53.1373%);
+  --chart-1: hsl(203.8863 88.2845% 53.1373%);
+  --chart-2: hsl(159.7826 100% 36.0784%);
+  --chart-3: hsl(42.0290 92.8251% 56.2745%);
+  --chart-4: hsl(147.1429 78.5047% 41.9608%);
+  --chart-5: hsl(341.4894 75.2000% 50.9804%);
+  --sidebar: hsl(228 9.8039% 10%);
+  --sidebar-foreground: hsl(0 0% 85.0980%);
+  --sidebar-primary: hsl(202.8169 89.1213% 53.1373%);
+  --sidebar-primary-foreground: hsl(0 0% 100%);
+  --sidebar-accent: hsl(205.7143 70% 7.8431%);
+  --sidebar-accent-foreground: hsl(203.7736 87.6033% 52.5490%);
+  --sidebar-border: hsl(205.7143 15.7895% 26.0784%);
+  --sidebar-ring: hsl(202.8169 89.1213% 53.1373%);
+  --font-sans: 'Inter', 'Open Sans', sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, monospace;
+  --radius: 1.3rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-gray-50 text-foreground;
+    font-family: var(--font-sans);
+  }
+}
+
+@layer utilities {
+  .text-whatsapp-50 { color: var(--whatsapp-50); }
+  .text-whatsapp-500 { color: var(--whatsapp-500); }
+  .text-whatsapp-600 { color: var(--whatsapp-600); }
+  .text-whatsapp-700 { color: var(--whatsapp-700); }
+  
+  .bg-whatsapp-50 { background-color: var(--whatsapp-50); }
+  .bg-whatsapp-100 { background-color: var(--whatsapp-100); }
+  .bg-whatsapp-500 { background-color: var(--whatsapp-500); }
+  .bg-whatsapp-600 { background-color: var(--whatsapp-600); }
+  .bg-whatsapp-700 { background-color: var(--whatsapp-700); }
+  
+  .border-whatsapp-500 { border-color: var(--whatsapp-500); }
+  
+  .hover\:bg-whatsapp-600:hover { background-color: var(--whatsapp-600); }
+  .hover\:bg-whatsapp-100:hover { background-color: var(--whatsapp-100); }
+  .hover\:text-whatsapp-700:hover { color: var(--whatsapp-700); }
+  
+  /* Additional color utilities */
+  .bg-blue-50 { background-color: var(--blue-50); }
+  .bg-blue-100 { background-color: var(--blue-100); }
+  .text-blue-600 { color: var(--blue-600); }
+  .text-blue-700 { color: var(--blue-700); }
+  .hover\:bg-blue-100:hover { background-color: var(--blue-100); }
+  
+  .bg-purple-50 { background-color: var(--purple-50); }
+  .bg-purple-100 { background-color: var(--purple-100); }
+  .text-purple-600 { color: var(--purple-600); }
+  .text-purple-700 { color: var(--purple-700); }
+  .hover\:bg-purple-100:hover { background-color: var(--purple-100); }
+  
+  .bg-orange-50 { background-color: var(--orange-50); }
+  .bg-orange-100 { background-color: var(--orange-100); }
+  .text-orange-600 { color: var(--orange-600); }
+  .text-orange-700 { color: var(--orange-700); }
+  .hover\:bg-orange-100:hover { background-color: var(--orange-100); }
+  
+  .bg-gray-50 { background-color: var(--gray-50); }
+  .bg-gray-100 { background-color: var(--gray-100); }
+  .bg-gray-200 { background-color: var(--gray-200); }
+  .bg-gray-300 { background-color: var(--gray-300); }
+  .text-gray-400 { color: var(--gray-400); }
+  .text-gray-500 { color: var(--gray-500); }
+  .text-gray-600 { color: var(--gray-600); }
+  .text-gray-700 { color: var(--gray-700); }
+  .text-gray-800 { color: var(--gray-800); }
+  .text-gray-900 { color: var(--gray-900); }
+  .border-gray-200 { border-color: var(--gray-200); }
+  .border-gray-300 { border-color: var(--gray-300); }
+  .hover\:bg-gray-50:hover { background-color: var(--gray-50); }
+}
