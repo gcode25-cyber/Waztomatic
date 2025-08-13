@@ -8,6 +8,19 @@ Waziper is a comprehensive WhatsApp marketing automation platform built with Nod
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (August 13, 2025)
+
+✓ **QR Code Display Issue Fixed**: Resolved WhatsApp QR code generation and display problems
+  - Fixed Baileys library import issues using ES module compatibility with createRequire
+  - Converted raw QR code strings to proper data URL format (`data:image/png;base64,`)
+  - Enhanced QR code modal with better error handling for failed sessions
+  - QR codes now display correctly as scannable images in the frontend
+  
+✓ **UI Improvements**: Fixed various console warnings and accessibility issues
+  - Removed duplicate close buttons from dialog components
+  - Added proper dialog descriptions for screen readers
+  - Fixed nested anchor tag warnings in sidebar navigation
+
 ## System Architecture
 
 ### Frontend Architecture
