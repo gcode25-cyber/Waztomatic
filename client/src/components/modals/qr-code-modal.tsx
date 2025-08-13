@@ -20,7 +20,7 @@ export function QRCodeModal({ isOpen, onClose, session }: QRCodeModalProps) {
   const [connectionStatus, setConnectionStatus] = useState<string>("waiting");
 
   const { data: qrData, refetch, isError, error } = useQuery<{ qrCode: string }>({
-    queryKey: ["/api/sessions", session?.id, "qr"],
+    queryKey: [`/api/sessions/${session?.id}/qr`],
     enabled: isOpen && !!session?.id,
     refetchInterval: 5000, // Refetch every 5 seconds
     retry: 3,
