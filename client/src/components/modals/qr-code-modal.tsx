@@ -19,10 +19,11 @@ interface QRCodeModalProps {
 export function QRCodeModal({ isOpen, onClose, session }: QRCodeModalProps) {
   const [connectionStatus, setConnectionStatus] = useState<string>("waiting");
 
-  const { data: qrData, refetch } = useQuery<{ qrCode: string }>({
+  const { data: qrData, refetch, isError, error } = useQuery<{ qrCode: string }>({
     queryKey: ["/api/sessions", session?.id, "qr"],
     enabled: isOpen && !!session?.id,
     refetchInterval: 5000, // Refetch every 5 seconds
+    retry: 3,
   });
 
   useEffect(() => {
@@ -79,7 +80,15 @@ export function QRCodeModal({ isOpen, onClose, session }: QRCodeModalProps) {
         <div className="text-center space-y-6">
           {/* QR Code Display */}
           <div className="w-64 h-64 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center mx-auto relative">
-            {qrData?.qrCode ? (
+            {isError ? (
+              <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <X className="w-8 h-8 text-red-600" />
+                </div>
+                <p className="text-sm text-red-600 font-medium">Failed to load QR code</p>
+                <p className="text-xs text-gray-500 mt-1">Session may have expired</p>
+              </div>
+            ) : qrData?.qrCode ? (
               <img 
                 src={qrData.qrCode} 
                 alt="WhatsApp QR Code" 
