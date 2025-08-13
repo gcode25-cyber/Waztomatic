@@ -18,7 +18,7 @@ interface QRCodeModalProps {
 export function QRCodeModal({ isOpen, onClose, session }: QRCodeModalProps) {
   const [connectionStatus, setConnectionStatus] = useState<string>("waiting");
 
-  const { data: qrData, refetch } = useQuery({
+  const { data: qrData, refetch } = useQuery<{ qrCode: string }>({
     queryKey: ["/api/sessions", session?.id, "qr"],
     enabled: isOpen && !!session?.id,
     refetchInterval: 5000, // Refetch every 5 seconds
@@ -69,12 +69,7 @@ export function QRCodeModal({ isOpen, onClose, session }: QRCodeModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            Connect WhatsApp
-            <Button variant="ghost" size="sm" onClick={onClose} data-testid="button-close-qr-modal">
-              <X className="w-4 h-4" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>Connect WhatsApp</DialogTitle>
         </DialogHeader>
 
         <div className="text-center space-y-6">

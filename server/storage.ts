@@ -205,7 +205,8 @@ export class MemStorage implements IStorage {
       sessionId: insertCampaign.sessionId || null,
       mediaUrl: insertCampaign.mediaUrl || null,
       mediaType: insertCampaign.mediaType || null,
-      scheduledAt: insertCampaign.scheduledAt || null
+      scheduledAt: insertCampaign.scheduledAt || null,
+      rateLimit: insertCampaign.rateLimit ?? 30
     };
     this.campaigns.set(id, campaign);
     return campaign;
@@ -246,7 +247,8 @@ export class MemStorage implements IStorage {
       isActive: insertRule.isActive ?? null,
       businessHoursOnly: insertRule.businessHoursOnly ?? null,
       businessHoursStart: insertRule.businessHoursStart || null,
-      businessHoursEnd: insertRule.businessHoursEnd || null
+      businessHoursEnd: insertRule.businessHoursEnd || null,
+      triggerType: insertRule.triggerType || 'contains'
     };
     this.autoReplyRules.set(id, rule);
     return rule;

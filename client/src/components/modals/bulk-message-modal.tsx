@@ -182,12 +182,7 @@ export function BulkMessageModal({ isOpen, onClose }: BulkMessageModalProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            Create Bulk Message Campaign
-            <Button variant="ghost" size="sm" onClick={onClose} data-testid="button-close-bulk-modal">
-              <X className="w-4 h-4" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>Create Bulk Message Campaign</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
